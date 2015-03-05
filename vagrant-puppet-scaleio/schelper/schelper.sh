@@ -14,9 +14,13 @@ done
 
 
 echo "moving on" >> /tmp/schelper.log
-echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/scinia
-mkfs.xfs /dev/scinia1 && sleep 1
-mount /dev/scinia1 /var/lib/docker
+echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/scinia >> /tmp/schelper.log
+mkfs.xfs /dev/scinia1 2>&1 >> /tmp/schelper.log
+mkdir /var/lib/docker &>/dev/null
+mount /dev/scinia1 /var/lib/docker >> /tmp/schelper.log
+
+df >> /tmp/schelper.log
+
 
 cat /etc/fstab | grep scinia1
 if [ $? -eq 0 ]; then
@@ -25,5 +29,5 @@ if [ $? -eq 0 ]; then
 fi
 
 echo '/dev/scinia1              /var/lib/docker           xfs    defaults        1 2' >> /etc/fstab
-systemctl enable docker.service
-systemctl start docker.service
+systemctl enable docker.service >> /tmp/schelper.log
+systemctl start docker.service >> /tmp/schelper.log
