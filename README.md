@@ -24,6 +24,15 @@ Any OS that can run the Docker server along with a ScaleIO client and server can
  - ```vagrant up```
  - ```vagrant ssh tb```
  - ```df -h``` and verify the /dev/sdcinia1 is mounted as ```/var/lib/docker```
+- Requirements for ```vagrant-puppet-scaleio``` with Docker
+ - Vagrant 1.6.5+
+ - Virtual Box
+ - ScaleIO 1.31-1277.3
+- Installs
+ - Puppet 3.7.4 (or latest)
+ - Docker 1.5 (or latest)
+
+
 
 ## <a id="challenges">Container Data Services Challenges</a>
 - Containers are typically thought of as non-persistent
