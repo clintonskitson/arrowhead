@@ -61,6 +61,10 @@ In addition to code specific to the goal, there should be a ton of artifacts tha
 - Docker Storage Volumes fruition
  - https://github.com/docker/docker/issues/11020
  - https://github.com/docker/docker/issues/11090
+ - https://github.com/docker/docker/issues/9803
+ - https://github.com/docker/docker/issues/9250
+ - https://github.com/docker/docker/issues/7249#issuecomment-71203483
+ - https://github.com/docker/docker/pull/8484#issuecomment-62857734
  - ..any many others
 - to be defined
 
