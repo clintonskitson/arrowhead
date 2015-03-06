@@ -1,0 +1,76 @@
+# Arrowhead
+This repo represents a location for centralized information and open collaboration around containers and block data services with ScaleIO.
+
+Arrowhead is the name of the house, turned house museum, where Herman Melville wrote Moby Dick.  Alike Melville's important things in Arrowhead, the bytes and bits associated to containers are sometimes also important.
+
+- [Overview](#overview)
+- [Status](#status)
+- [Container Data Services Challenges](#challenges)
+- [Possible Scenarios](#scenarios)
+- [Container Data Services Functionality](#scaleiowithdocker)
+- [Possible Work Needed](#workneeded)
+
+## <a id="overview">Overview</a>
+ScaleIO is a software-defined storage solution that enables building virtual storage arrays by consuming local storage of machines and adding that to virtual storage pools.  These pools can then be consumed from by any machine as a ScaleIO client.  The software-defined model along with ScaleIO's massively scalable architecture enables hyper-convergence for any platform acting as a ScaleIO server and client.
+
+Any OS that can run the Docker server along with a ScaleIO client and server can turn into a Hyper-Converged Docker platform.
+
+## <a id="status">Status</a>
+- Currently building necessary artifacts to enable functionality.  
+- See the ```vagrant-puppet-scaleio``` sub-directory for a simple way to get ScaleIO with Docker running.
+ - ```git clone https://github.com/emccode/arrowhead```
+ - ```cd arrowhead/vagrant-puppet-scaleio```
+ - ```cp EMC-ScaleIO-*.rpm puppet/modules/scaleio/files/.```
+ - ```vagrant up```
+ - ```vagrant ssh tb```
+ - ```df -h``` and verify the /dev/sdcinia1 is mounted as ```/var/lib/docker```
+
+## <a id="challenges">Container Data Services Challenges</a>
+- Containers are typically thought of as non-persistent
+- All containers on a host consume from same storage
+- Storage profiles are currently configured on a host by host level
+- Containers sometimes require "Fast Bytes" or differentiated storage services
+- Container hosts are thought of as non-persistent which makes persistence in containers more difficult
+
+## <a id="scenarios">Possible Scenarios</a>
+- Single hardware platform serving storage and containers
+- Push persistence capability to storage arrays
+- Container Migration between hosts
+- Storage attributes per container
+  - Availability defined per container
+  - QOS defined per container
+
+## <a id="scaleiowithdocker">Container Data Services Functionality</a>
+### ScaleIO with Docker
+One of the first steps to being able to develop this functionality is a working Docker + ScaleIO environment.  This can be very easy to deploy using the ```vagrant-puppet-scaleio``` configuration in this repository.  A simple ```vagrant up``` will create a ScaleIO cluster, install Docker, and attach a client ScaleIO volume to each Docker host.  
+
+Once this is done you have Docker containers being ran from ScaleIO distributed volumes.
+
+### ScaleIO with Docker with shared volumes
+TBD, not the ideal scenario
+
+### ScaleIO with Docker and DVOLs
+This is the ideal state where a container has a volume that may or not represent a 1st class citizen in the Docker eco-system.  It would have the ability to be mounted anywhere and have granular controls of storage aspects.
+
+
+
+## <a id="workneeded">Possible Work needed</a>
+In addition to code specific to the goal, there should be a ton of artifacts that generated abstracted from the Arrowhead project and relevant for other uses.
+
+- Goscaleio - API bindings that enable scaleio management
+- Docker Storage Volumes fruition
+ - https://github.com/docker/docker/issues/11020
+ - https://github.com/docker/docker/issues/11090
+ - ..any many others
+- to be defined
+
+
+Licensing
+---------
+Licensed under the Apache License, Version 2.0 (the “License”); you may not use this file except in compliance with the License. You may obtain a copy of the License at <http://www.apache.org/licenses/LICENSE-2.0>
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+Support
+-------
+Please file bugs and issues at the Github issues page. For more general discussions you can contact the EMC Code team at <a href="https://groups.google.com/forum/#!forum/emccode-users">Google Groups</a>. The code and documentation are released with no warranties or SLAs and are intended to be supported through a community driven process.
