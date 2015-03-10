@@ -1,0 +1,14 @@
+[Unit]
+Description=Mount storage to /var/lib/docker
+Before=docker.service
+Requires=sys-devices-virtual-block-scinia-scinia1.device
+After=sys-devices-virtual-block-scinia-scinia1.device
+
+[Mount]
+What=/dev/scinia1
+Where=/var/lib/docker
+Type=ext4
+Options=_netdev
+
+[Install]
+WantedBy=docker.service

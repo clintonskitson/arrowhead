@@ -14,20 +14,21 @@ done
 
 
 echo "moving on" >> /tmp/schelper.log
-echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/scinia >> /tmp/schelper.log
-mkfs.xfs /dev/scinia1 2>&1 >> /tmp/schelper.log
-mkdir /var/lib/docker &>/dev/null
-mount /dev/scinia1 /var/lib/docker >> /tmp/schelper.log
+echo -e "n\np\n1\n\n\n\nw" | fdisk /dev/scinia >> /tmp/schelper.log
 
-df >> /tmp/schelper.log
+mkfs.ext4 /dev/scinia1 >> /tmp/schelper.log
 
+cp /opt/schelper/var-lib-docker.mount /usr/lib/systemd/system/.
 
-cat /etc/fstab | grep scinia1
-if [ $? -eq 0 ]; then
-  echo "fstab statement already exits"
-  exit 0
-fi
+rm -Rf /var/lib/docker
+mkdir /var/lib/docker
 
-echo '/dev/scinia1              /var/lib/docker           xfs    defaults        1 2' >> /etc/fstab
+systemctl daemon-reload
+
+systemctl enable var-lib-docker.mount >> /tmp/schelper.log
+systemctl start var-lib-docker.mount >> /tmp/schelper.log
+
 systemctl enable docker.service >> /tmp/schelper.log
 systemctl start docker.service >> /tmp/schelper.log
+
+df >> /tmp/schelper.log

@@ -1,47 +1,72 @@
 # Arrowhead
-This repo represents a location for centralized information and open collaboration around containers and block data services with ScaleIO.
+This repo represents an EMC CODE location related to developer onboarding and general information around our efforts with containers, and block data services with ScaleIO.
 
-Arrowhead is the name of the house, turned house museum, where Herman Melville wrote Moby Dick.  Alike Melville's important things in Arrowhead, the bytes and bits associated to containers are sometimes also important.
+Arrowhead is a fitting name for the project since it is the name of the house, turned house museum, where Herman Melville wrote Moby Dick (about a whale).  Akin to Melville's important things in Arrowhead, the bytes and bits associated to containers are sometimes also important.
 
 - [Overview](#overview)
-- [Status](#status)
-- [Container Data Services Challenges](#challenges)
-- [Possible Scenarios](#scenarios)
-- [Container Data Services Functionality](#scaleiowithdocker)
-- [Possible Work Needed](#workneeded)
+- [Here and Now](#hereandnow)
+ - [Projects](#projects)
+- [Future](#future)
+ - [Container Data Services Challenges](#challenges)
+ - [Possible Scenarios](#scenarios)
+ - [Container Data Services Functionality](#scaleiowithdocker)
+ - [Possible Work Needed](#workneeded)
 
 ## <a id="overview">Overview</a>
-ScaleIO is a software-defined storage solution that enables building virtual storage arrays by consuming local storage of machines and adding that to virtual storage pools.  These pools can then be consumed from by any machine as a ScaleIO client.  The software-defined model along with ScaleIO's massively scalable architecture enables hyper-convergence for any platform acting as a ScaleIO server and client.
+ScaleIO is a software-defined storage solution that enables building virtual storage arrays from the distributed local storage of machines.  These storage arrays have virtual pools that can then be consumed through volumes from any machine that is a ScaleIO client.  The software-defined model along with ScaleIO's massively scalable architecture enables both dedicated storage servers that are turned into virtual storage pools and Hyper-Converged storage solutions.  
 
-Any OS that can run the Docker server along with a ScaleIO client and server can turn into a Hyper-Converged Docker platform.
+Any supported OS that can run the Docker server along with a ScaleIO client/server pair can turn into a Hyper-Converged Docker platform.  And further, any supported machine can consume or provide storage to the virtual pools.
 
-## <a id="status">Status</a>
-- Currently building necessary artifacts to enable functionality.  
-- See the ```vagrant-puppet-scaleio``` sub-directory for a simple way to get ScaleIO with Docker running.
+
+## <a id="hereandnow">Here and Now</a>
+Storage for Docker is currently highly reliant on non-clustered local filesystems (likely EXT4 or XFS).  The most likely model, is to run the ```device-mapper``` driver on top of a filesystem.  This enables the default behavior of building snapshot/delta layers that are presented to and consumed by containers.  
+
+Docker uses a single storage location of ```/var/lib/docker```.  In order to expand beyond the local storage capabilities, one can mount a new device to an empty ```/var/lib/docker``` directory and start Docker services to start consuming storage from this new location.
+
+But why would someone want to expand capabilities of storage beyond a single host?  Docker seems to run well for my use case, what gives?
+
+- Data profiles sometimes can't be supported by one host
+ - Fast Bytes
+ - Capacity
+ - Protection
+ - Availability
+ - Mobility
+- Container OS's that support containers should be non-persistent
+
+
+### <a id="projects">Projects</a>
+In order to support the ```Here and Now``` and minimize efforts to get ScaleIO clusters running, there are a handful of resources to streamline getting a cluster running.
+
+- Vagrant+Puppet+ScaleIO+Docker - Get CentOS 7  up and running quickly with services installed
  - ```git clone https://github.com/emccode/arrowhead```
  - ```cd arrowhead/vagrant-puppet-scaleio```
  - ```cp EMC-ScaleIO-*.rpm puppet/modules/scaleio/files/.```
  - ```vagrant up```
  - ```vagrant ssh tb```
  - ```df -h``` and verify the /dev/sdcinia1 is mounted as ```/var/lib/docker```
-- Requirements for ```vagrant-puppet-scaleio``` with Docker
- - Vagrant 1.6.5+
- - Virtual Box
- - ScaleIO 1.31-1277.3
-- Installs
- - Puppet 3.7.4 (or latest)
- - Docker 1.5 (or latest)
+ - Run a container, ie ```sudo -i``` and then ```docker run -ti -p 8080 emccode/helloworld```
+- ScaleIO inside of Docker containers
+ - See [DevHigh5 project](https://github.com/djannot/scaleio-docker)
+
+There are a handful of enabling projects that we can recognize below to assist in operating and automating ScaleIO with other technologies.  Core to Docker and other things is Go of course, so you will find that as a priority below.
+
+- Public API documentation
+[Goscaleio](https://github.com/emccode/goscaleio) - API Bindings in Go
+- [Goscli](https://github.com/emccode/goscli) - Cross-platform CLI using Goscaleio bindings
+- other platform stuff
 
 
 
-## <a id="challenges">Container Data Services Challenges</a>
+
+## <a id="future">Future</a>
+### <a id="challenges">Container Data Services Challenges</a>
 - Containers are typically thought of as non-persistent
 - All containers on a host consume from same storage
 - Storage profiles are currently configured on a host by host level
 - Containers sometimes require "Fast Bytes" or differentiated storage services
 - Container hosts are thought of as non-persistent which makes persistence in containers more difficult
 
-## <a id="scenarios">Possible Scenarios</a>
+### <a id="scenarios">Possible Scenarios</a>
 - Single hardware platform serving storage and containers
 - Push persistence capability to storage arrays
 - Container Migration between hosts
@@ -49,21 +74,21 @@ Any OS that can run the Docker server along with a ScaleIO client and server can
   - Availability defined per container
   - QOS defined per container
 
-## <a id="scaleiowithdocker">Container Data Services Functionality</a>
+### <a id="scaleiowithdocker">Container Data Services Functionality</a>
 ### ScaleIO with Docker
 One of the first steps to being able to develop this functionality is a working Docker + ScaleIO environment.  This can be very easy to deploy using the ```vagrant-puppet-scaleio``` configuration in this repository.  A simple ```vagrant up``` will create a ScaleIO cluster, install Docker, and attach a client ScaleIO volume to each Docker host.  
 
 Once this is done you have Docker containers being ran from ScaleIO distributed volumes.
 
-### ScaleIO with Docker with shared volumes
+#### ScaleIO with Docker with shared volumes
 TBD, not the ideal scenario
 
-### ScaleIO with Docker and DVOLs
+#### ScaleIO with Docker and DVOLs
 This is the ideal state where a container has a volume that may or not represent a 1st class citizen in the Docker eco-system.  It would have the ability to be mounted anywhere and have granular controls of storage aspects.
 
 
 
-## <a id="workneeded">Possible Work needed</a>
+### <a id="workneeded">Possible Work needed</a>
 In addition to code specific to the goal, there should be a ton of artifacts that generated abstracted from the Arrowhead project and relevant for other uses.
 
 - Goscaleio - API bindings that enable scaleio management
