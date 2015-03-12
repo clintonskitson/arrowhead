@@ -11,7 +11,7 @@
     {
       :hostname  =>  'mdm1',
       :common_location_name => 'us_west',
-      :common_instance_type => 'medium',
+      :common_instance_type => 'lowcpu_13mem',
       :common_image_name => 'CentOS-7-x64',
       :type => 'puppetagent',
       :storage => "[{ 'DeviceName' => '/dev/xvdb', 'Ebs.VolumeSize' => 110 }]",
@@ -19,7 +19,7 @@
     {
       :hostname  =>  'tb',
       :common_location_name => 'us_west',
-      :common_instance_type => 'medium',
+      :common_instance_type => 'lowcpu_13mem',
       :common_image_name => 'CentOS-7-x64',
       :type => 'puppetagent',
       :storage => "[{ 'DeviceName' => '/dev/xvdb', 'Ebs.VolumeSize' => 110 }]",
@@ -27,7 +27,7 @@
     {
       :hostname  =>  'mdm2',
       :common_location_name => 'us_west',
-      :common_instance_type => 'medium',
+      :common_instance_type => 'lowcpu_13mem',
       :common_image_name => 'CentOS-7-x64',
       :type => 'puppetagent',
       :storage => "[{ 'DeviceName' => '/dev/xvdb', 'Ebs.VolumeSize' => 110 }]",
