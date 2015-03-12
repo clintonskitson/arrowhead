@@ -35,9 +35,9 @@ But why would someone want to expand capabilities of storage beyond a single hos
 
 
 ### <a id="projects">Projects</a>
-In order to support the ```Here and Now``` and minimize efforts to get ScaleIO clusters running, there are a handful of resources to streamline getting a cluster running.
+In order to support the ```Here and Now``` and minimize efforts to get ScaleIO clusters running with Docker, there are a handful of resources to streamline getting a cluster running.  This will install all vital ScaleIO aspects including the REST API gateway.
 
-- Vagrant+Puppet+ScaleIO+Docker - Get CentOS 7  up and running quickly with services installed
+- Vagrant+Puppet+ScaleIO+Docker - Get CentOS 7 up and running on Virtual Box quickly with services installed
  - ```git clone https://github.com/emccode/arrowhead```
  - ```cd arrowhead/vagrant-puppet-scaleio```
  - ```cp EMC-ScaleIO-*.rpm puppet/modules/scaleio/files/.```
@@ -45,15 +45,25 @@ In order to support the ```Here and Now``` and minimize efforts to get ScaleIO c
  - ```vagrant ssh tb```
  - ```df -h``` and verify the /dev/sdcinia1 is mounted as ```/var/lib/docker```
  - Run a container, ie ```sudo -i``` and then ```docker run -ti -p 8080 emccode/helloworld```
+- VagrantSpice - Get CentOS 7 up and running among many clouds including AWS, Azure, Digital Ocean, GCE, and Rackspace
+ - See [VagrantSpice project](https://github.com/emccode/vagrantspice)
+ - cd arrowhead/vagrantspice/VagrantSpicedir
+ - Update spice-conf/consumer_config.rb file with appropriate cloud credentials
+ - Choose a cloud (ie google/AWS) and create a ```creds``` directory with your private SSH key
+ - Enter cloud directory
+ - ```cp EMC-ScaleIO-*.rpm sync/.``` and create a sync/schelper.sh file that copies these files to ```/etc/puppet/modules/scaleio/files/```
+ - ```vagrant up```
 - ScaleIO inside of Docker containers
  - See [DevHigh5 project](https://github.com/djannot/scaleio-docker)
 
 There are a handful of enabling projects that we can recognize below to assist in operating and automating ScaleIO with other technologies.  Core to Docker and other things is Go of course, so you will find that as a priority below.
 
+- [Goscaleio](https://github.com/emccode/goscaleio)
+ - API Bindings in Go
+- [Goscli](https://github.com/emccode/goscli)
+ - Cross-platform CLI using Goscaleio bindings
 - Public API documentation
-[Goscaleio](https://github.com/emccode/goscaleio) - API Bindings in Go
-- [Goscli](https://github.com/emccode/goscli) - Cross-platform CLI using Goscaleio bindings
-- other platform stuff
+- Other platform stuff..
 
 
 

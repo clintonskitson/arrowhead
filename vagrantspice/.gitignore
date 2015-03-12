@@ -3,3 +3,4 @@ files/
 .vagrant/
 VagrantSpicedir/spice-conf/consumer_config.rb.bak
 consumer_config.rb
+copyrpms.sh

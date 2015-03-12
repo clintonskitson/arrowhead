@@ -80,8 +80,6 @@
           /usr/bin/puppet resource service iptables ensure=stopped enable=false
         fi
 
-        sh /opt/sync/copyrpms.sh
-
         /usr/bin/puppet resource service puppetmaster ensure=running enable=true
 
       "},
@@ -93,7 +91,9 @@
         puppet config set --section main parser future
 
         cp -Rf /opt/sync/puppet/* /etc/puppet/.
-        
+
+        sh /opt/sync/copyrpms.sh
+
         systemctl restart puppetmaster
       "},
       :puppetmaster_sitepp_copy => proc {|from| "
@@ -114,6 +114,24 @@
           puppet agent -t --detailed-exitcodes || [ $? -eq 2 ]
         fi
 
+      "},
+      :puppetagent_install_docker_scaleio => proc {|config_param| "
+        if which docker > /dev/null 2>&1; then
+          echo 'Docker Installed.'
+          systemctl stop docker
+        else
+          yum install -y docker
+        fi
+        rm -Rf /var/lib/docker
+
+        if which screen > /dev/null 2>&1; then
+          echo 'Screen installed.'
+        else
+          yum install -y screen
+        fi
+
+        chmod +x /opt/schelper/schelper.sh
+        /usr/bin/screen -m -d bash -c '/opt/schelper/schelper.sh'
       "},
       :puppetmaster_remove => "sudo rpm -e puppet-server --nodeps &> /dev/null",
       :puppetagent_remove => "sudo rpm -e puppet --nodeps &> /dev/null",

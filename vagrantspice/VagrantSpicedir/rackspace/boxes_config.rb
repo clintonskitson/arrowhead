@@ -1,33 +1,38 @@
 {
   :boxes => [
-    { 
-      :hostname  =>  'rackspace-coreos01',
+    {
+      :hostname  =>  'puppetmaster',
       :common_location_name => 'us_central',
       :common_instance_type => 'micro',
-      :common_image_name => 'CoreOS-stable',
+      :common_image_name => 'CentOS-7-x64',
+      :type => 'puppetmaster',
     },
-    { 
-      :hostname  =>  'rackspace-coreos02',
-      :common_location_name => 'us_east',
-      :common_instance_type => 'small',
-      :common_image_name => 'CoreOS-beta'
-    },
-    { 
-      :hostname  =>  'rackspace-coreos03',
-      :common_location_name => 'asia_east',
+    {
+      :hostname  =>  'mdm1',
+      :common_location_name => 'us_central',
       :common_instance_type => 'medium',
-      :common_image_name => 'CoreOS-alpha',
+      :common_image_name => 'CentOS-7-x64',
+      :type => 'puppetagent',
+      # :storage => "110",
     },
-    { 
-      :hostname  =>  'rackspace-coreos04',
-      :common_location_name => 'aus_east',
-      :common_instance_type => 'large',
-      :common_image_name => 'CoreOS-alpha',
+    {
+      :hostname  =>  'tb',
+      :common_location_name => 'us_central',
+      :common_instance_type => 'medium',
+      :common_image_name => 'CentOS-7-x64',
+      :type => 'puppetagent',
+      # :storage => "110",
+    },
+    {
+      :hostname  =>  'mdm2',
+      :common_location_name => 'us_central',
+      :common_instance_type => 'medium',
+      :common_image_name => 'CentOS-7-x64',
+      :type => 'puppetagent',
+      # :storage => "110",
     },
   ],
-  :boxes_type => 'coreos-fleet',
-  :config_param => '{
-      :etcd_url => "https://discovery.etcd.io/bae06c1b688e7e9d6216f92bb5805691",
-    }',
-}
 
+  :boxes_type => 'puppetagent',
+
+}

@@ -4,40 +4,41 @@ Package {
 }
 
 $version = '1.31-1277.3'
-$mdm_ip = ['192.168.50.12','192.168.50.13']
-$tb_ip = '192.168.50.11'
+$rpm_suffix = ".el7.x86_64"
+$mdm_fqdn = ['mdm1.scaleio.local','mdm2.scaleio.local']
+$mdm_ip = [hosts_lookup($mdm_fqdn[0])[0],hosts_lookup($mdm_fqdn[1])[0]]
+$tb_fqdn = 'tb.scaleio.local'
+$tb_ip = hosts_lookup($tb_fqdn)[0]
 $cluster_name = "cluster1"
 $enable_cluster_mode = true
 $password = 'Scaleio123'
 $gw_password= 'Scaleio123'
-$rpm_suffix = ".el7.x86_64"
+
+
 
 
 $sio_sds_device = {
           'tb.scaleio.local' => {
-            'ip' => '192.168.50.11',
+            'ip' => hosts_lookup($tb_fqdn)[0],
             'protection_domain' => 'protection_domain1',
             'devices' => {
-              '/var/sio_device1' => {  'size' => '100GB',
-                                                'storage_pool' => 'capacity'
+              '/dev/xvdb' => {  'storage_pool' => 'capacity'
                                               },
             }
           },
           'mdm1.scaleio.local' => {
-            'ip' => '192.168.50.12',
+            'ip' => hosts_lookup($mdm_fqdn[0])[0],
             'protection_domain' => 'protection_domain1',
             'devices' => {
-              '/var/sio_device1' => {  'size' => '100GB',
-                                                'storage_pool' => 'capacity'
+              '/dev/xvdb' => {  'storage_pool' => 'capacity'
                                               },
             }
           },
           'mdm2.scaleio.local' => {
-            'ip' => '192.168.50.13',
+            'ip' => hosts_lookup($mdm_fqdn[1])[0],
             'protection_domain' => 'protection_domain1',
             'devices' => {
-              '/var/sio_device1' => {  'size' => '100GB',
-                                                'storage_pool' => 'capacity'
+              '/dev/xvdb' => {  'storage_pool' => 'capacity'
                                               },
             }
           },
@@ -48,21 +49,21 @@ $sio_sdc_volume = {
           'protection_domain' => 'protection_domain1',
           'storage_pool' => 'capacity',
           'sdc_ip' => [
-              '192.168.50.11',
+            hosts_lookup($tb_fqdn)[0],
             ]
           },
           'volume2' => { 'size_gb' => 8,
           'protection_domain' => 'protection_domain1',
           'storage_pool' => 'capacity',
           'sdc_ip' => [
-              '192.168.50.12',
+            hosts_lookup($mdm_fqdn[0])[0],
             ]
           },
           'volume3' => { 'size_gb' => 8,
           'protection_domain' => 'protection_domain1',
           'storage_pool' => 'capacity',
           'sdc_ip' => [
-              '192.168.50.13',
+            hosts_lookup($mdm_fqdn[1])[0],
             ]
           },
 

@@ -14,7 +14,8 @@ class scaleio::params (
   $sio_sds_device         = undef,
   $sio_sdc_volume         = undef,
   $callhome_cfg           = undef,
-  $sds_ssd_env_flag       = false
+  $sds_ssd_env_flag       = false,
+  $rpm_suffix             = ".el6.x86_64",
 ){
 
   case $::osfamily {
@@ -27,16 +28,15 @@ class scaleio::params (
   }
 
   $pathpackage     = "/tmp"
-  $callhomepackage = ["EMC-ScaleIO-callhome","-${version}.el7.x86_64"]
-  $mdmpackage      = ["EMC-ScaleIO-mdm","-${version}.el7.x86_64"]
-  $liapackage      = ["EMC-ScaleIO-lia","-${version}.el7.x86_64"]
-  $sdspackage      = ["EMC-ScaleIO-sds","-${version}.el7.x86_64"]
-  $sdcpackage      = ["EMC-ScaleIO-sdc","-${version}.el7.x86_64"]
-  $tbpackage       = ["EMC-ScaleIO-tb","-${version}.el7.x86_64"]
+  $callhomepackage = ["EMC-ScaleIO-callhome","-${version}${rpm_suffix}"]
+  $mdmpackage      = ["EMC-ScaleIO-mdm","-${version}${rpm_suffix}"]
+  $liapackage      = ["EMC-ScaleIO-lia","-${version}${rpm_suffix}"]
+  $sdspackage      = ["EMC-ScaleIO-sds","-${version}${rpm_suffix}"]
+  $sdcpackage      = ["EMC-ScaleIO-sdc","-${version}${rpm_suffix}"]
+  $tbpackage       = ["EMC-ScaleIO-tb","-${version}${rpm_suffix}"]
   $gwpackage       = ["EMC-ScaleIO-gateway","-${version}.noarch"]
   $uipackage       = ["EMC-ScaleIO-gui","-${version}.noarch"]
 
   $use_ssd           = false
 
 }
-

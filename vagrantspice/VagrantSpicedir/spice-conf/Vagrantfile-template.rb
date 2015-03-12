@@ -1,3 +1,4 @@
+Vagrant.require_version ">= 1.7.2"
 
 Vagrant.configure("2") do |config|
   boxes_type = boxes_config[:boxes_type]
@@ -16,6 +17,7 @@ Vagrant.configure("2") do |config|
   eval($provider_config[$provider][:ip_resolver]) unless !$provider_config[$provider][:ip_resolver]
 
   config_str = $provider_config[$provider][:defaults][:config] || $provider_config[:defaults][:config]
+
   eval(config_str)
 
   boxes = boxes_config[:boxes]
@@ -39,6 +41,8 @@ Vagrant.configure("2") do |config|
     str_storage = box[:storage] || boxes_config[:storage] || $provider_config[$provider][:instances_config][box_type][:storage]
 
     instance_image = $provider_config[$provider][:images_lookup][location][common_image_name]
+
+    str_user_data = box[:user_data] || boxes_config[:user_data] || $provider_config[$provider][:images_config][instance_image][:user_data]
 
     common_instance_type = box[:common_instance_type] || $provider_config[$provider][:instances_config][box_type][:common_instance_type] || $provider_config[$provider][:defaults][:common_instance_type]
     instance_type = $provider_config[$provider][:instance_type_lookup][location][common_instance_type]
